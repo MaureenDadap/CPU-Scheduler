@@ -6,9 +6,8 @@ public class App {
     /**
      * Main menu method. Separated from main method for recursive calls
      * 
-     * @param (choice)  initialized in the main method, used to select an item in
-     *                  the menu; also used for yes/no prompts
-     * @param (scanner) initialized in the main method, used for input
+     * @param (choice) initialized in the main method, used to select an item in the
+     *                 menu; also used for yes/no prompts
      */
     private static void menu(char choice) {
         do {
@@ -92,13 +91,14 @@ public class App {
             System.out.println("\t||                                                ||");
             System.out.println("\t|| > THERE ARE CURRENTLY NO PROCESSES EXISTING    ||");
             System.out.println("\t||________________________________________________||");
+            System.out.println();
 
             // Sub-menu for actions to be taken.
             // It is the same as if there are existing processes,
             // except that it doesn't have the "Compute" option
             do {
                 System.out.println("( 1 ) Create a process");
-                System.out.println("( 2 ) Generate a random process)");
+                System.out.println("( 2 ) Generate a random process");
                 System.out.println("( 0 ) Exit");
                 System.out.print("CHOICE: ");
 
@@ -106,8 +106,10 @@ public class App {
 
                 if (ch == '1') {
                     Utils.processCreator();
+                    break;
                 } else if (ch == '2') {
                     Utils.randomProcessCreator();
+                    break;
                 } else if (ch == '0') {
                     menu('0');
                 } else {
@@ -117,11 +119,15 @@ public class App {
                     System.out.println("\t||________________________________________________||");
                 }
             } while (ch != '0');
+
+            firstComeFirstServe();
         }
 
         // Check first if a process exists; if a process exists:
         else {
-            // TODO: display the current processes table here
+            // display the processes table
+            System.out.println();
+            Utils.displayProcessesTable();
 
             // Sub-menu for actions to be taken.
             // It is the same as if there are no existing processes,
@@ -129,18 +135,22 @@ public class App {
             do {
                 System.out.println("( 1 ) Compute");
                 System.out.println("( 2 ) Create a process");
-                System.out.println("( 3 ) Generate a random process)");
+                System.out.println("( 3 ) Generate a random process");
                 System.out.println("( 0 ) Exit");
                 System.out.print("CHOICE: ");
 
                 ch = scanner.next().charAt(0);
 
                 if (ch == '1') {
-                    //TODO: the actual algorithm goes here; can be a method call for legibility
+                    // TODO: the actual algorithm goes here; can be a method call for legibility
+                    System.out.println("COMPUTATION :P");
+                    break;
                 } else if (ch == '2') {
                     Utils.processCreator();
+                    break;
                 } else if (ch == '3') {
                     Utils.randomProcessCreator();
+                    break;
                 } else if (ch == '0') {
                     menu('0');
                 } else {
@@ -150,6 +160,9 @@ public class App {
                     System.out.println("\t||________________________________________________||");
                 }
             } while (ch != '0');
+
+            firstComeFirstServe();
+
         }
     }
 
@@ -176,7 +189,6 @@ public class App {
     public static void main(String[] args) throws Exception {
         scanner = new Scanner(System.in);
         char choice = '0';
-        ProcessesTable processesTable = new ProcessesTable();
 
         menu(choice);
     }
