@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Contains the table structure for the processes. 
+ * Contains the table structure for the processes.
  */
 
 public class ProcessesTable {

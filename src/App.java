@@ -81,9 +81,7 @@ public class App {
     }
 
     /**
-     * 
      * First Come First Serve Algorithm
-     * 
      */
     private static void firstComeFirstServe() {
         char ch = '0';
