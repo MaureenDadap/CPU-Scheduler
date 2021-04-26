@@ -1,4 +1,5 @@
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,6 +16,6 @@ public class Processes {
         this.burst = burst;
     }
 
-    static Map<String, Processes> container = new Hashtable<String, Processes>();
+    static Map<String, Processes> container = new HashMap<String, Processes>();
     
 }
