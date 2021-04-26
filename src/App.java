@@ -1,8 +1,7 @@
 import java.util.Scanner;
 
 public class App {
-    final static String ANSI_MOVE_UP = "\033[%dA";
-    final static String ANSI_ERASE_LINE = "\033[2K";
+    static Scanner scanner;
 
     /**
      * Main menu method. separated from main method for recursive calls
@@ -11,7 +10,7 @@ public class App {
      *                  the menu; also used for yes/no prompts
      * @param (scanner) initialized in the main method, used for input
      */
-    private static void menu(char choice, Scanner scanner) {
+    private static void menu(char choice) {
         do {
             System.out.println();
             System.out.println("CHOOSE THE SCHEDULING ALGORITHM");
@@ -77,39 +76,76 @@ public class App {
                 System.out.println("\t|| > INVALID INPUT                                ||");
                 System.out.println("\t||________________________________________________||");
             }
+            System.out.println(); // new line after sub-menu
         } while (choice != '0');
     }
 
     private static void firstComeFirstServe() {
-        
+        char ch = '0';
+
+        // Check first if a process exists; if none exist:
+        if (Utils.checkProcessesTableExisting() == false) {
+            System.out.println("\t ________________________________________________");
+            System.out.println("\t||                                                ||");
+            System.out.println("\t|| > THERE ARE CURRENTLY NO PROCESSES EXISTING    ||");
+            System.out.println("\t||________________________________________________||");
+
+            do {
+                System.out.println("( 1 ) Create a process");
+                System.out.println("( 2 ) Generate a random process)");
+                System.out.println("( 0 ) Exit");
+                System.out.print("CHOICE: ");
+
+                ch = scanner.next().charAt(0);
+
+                if (ch == '1') {
+                    Utils.processCreator();
+                } else if (ch == '2') {
+                    Utils.randomProcessCreator();
+                } else if (ch == '0') {
+                    menu('0');
+                } else {
+                    System.out.println("\t ________________________________________________");
+                    System.out.println("\t||                                                ||");
+                    System.out.println("\t|| > INVALID INPUT                                ||");
+                    System.out.println("\t||________________________________________________||");
+                }
+
+            } while (ch != '0');
+
+        }
+
+        // Check first if a process exists; if a process exists:
+        else {
+            // TODO: display the current processes table here
+        }
     }
 
     private static void shortestJobFirst() {
-        
+
     }
 
     private static void shortestRemainingTime() {
-        
+
     }
 
     private static void priorityScheduling() {
-        
+
     }
 
     private static void roundRobin() {
-        
+
     }
 
     private static void multilevelQueue() {
-        
+
     }
 
-    
-
     public static void main(String[] args) throws Exception {
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         char choice = '0';
+        ProcessesTable processesTable = new ProcessesTable();
 
-        menu(choice, scanner);
+        menu(choice);
     }
 }
