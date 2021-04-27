@@ -148,7 +148,8 @@ public class Utils {
      * Displays a table of the summary of data after computation
      */
     public static void createTableSummary() {
-        // String leftAlignFormat = "| %-5s | %-9d | %-7d |%n";
+        Set<Map.Entry<String, ProcessesTable.TimeValues>> entries = ProcessesTable.processesMap.entrySet();
+        String leftAlignFormat = "| %-3s | %-4d | %-4d | %-4d | %-4d | %-4d | %-5d |%n";
 
         System.out.println();
         System.out.format("+------------------------------------------------+%n");
@@ -157,7 +158,12 @@ public class Utils {
         System.out.format("| ID  | AT   | BT   | ST   | CT   | WT   | tAT   |%n");
         System.out.format("+-----+------+------+------+------+------+-------+%n");
 
-        // TODO: populate the table
+        for (Map.Entry<String, ProcessesTable.TimeValues> entry : entries) {
+            System.out.format(leftAlignFormat, entry.getKey(), entry.getValue().getArrival(),
+                    entry.getValue().getBurst(), entry.getValue().getStartingTime(),
+                    entry.getValue().getCompletionTime(), entry.getValue().getWaitingTime(),
+                    entry.getValue().getTurnAroundTime());
+        }
 
         System.out.format("+-----+------+------+------+------+------+-------+%n");
     }
