@@ -45,7 +45,7 @@ public class Utils {
         // Use the TimeValues class to save integer primitives (arrival and burst) to an
         // object
         // the object will then be saved to the processes table/map
-        ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst);
+        ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst, 0, 0, 0, 0);
         ProcessesTable.processesMap.put(id, values);
     }
 
@@ -80,7 +80,7 @@ public class Utils {
         // Use the TimeValues class to save integer primitives (arrival and burst) to an
         // object
         // the object will then be saved to the processes table/map
-        ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst);
+        ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst, 0, 0, 0, 0);
         ProcessesTable.processesMap.put(id, values);
     }
 
@@ -143,7 +143,7 @@ public class Utils {
 
         return list;
     }
-    
+
     /**
      * Displays a table of the summary of data after computation
      */
