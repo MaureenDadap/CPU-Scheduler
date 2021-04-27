@@ -6,6 +6,8 @@ import java.util.Map;
  */
 
 public class ProcessesTable {
+    public static Map<String, TimeValues> processesMap = new HashMap<String, TimeValues>();
+
     /**
      * Wrapper class for the arrival and burst time values
      */
@@ -33,8 +35,5 @@ public class ProcessesTable {
         public void setBurst(int burst) {
             this.burst = burst;
         }
-
     }
-
-    public static Map<String, TimeValues> processesMap = new HashMap<String, TimeValues>();
 }

@@ -80,7 +80,7 @@ public class App {
     }
 
     /**
-     * First Come First Serve Algorithm
+     * First Come First Serve sub menu method
      */
     private static void firstComeFirstServe() {
         char ch = '0';
@@ -142,8 +142,7 @@ public class App {
                 ch = scanner.next().charAt(0);
 
                 if (ch == '1') {
-                    // TODO: the actual algorithm goes here; can be a method call for legibility
-                    System.out.println("COMPUTATION :P");
+                    Algorithms.firstComeFirstServe();
                     break;
                 } else if (ch == '2') {
                     Utils.processCreator();
