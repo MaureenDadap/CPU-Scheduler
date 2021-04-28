@@ -6,7 +6,7 @@ import java.util.Map;
  */
 
 public class ProcessesTable {
-    public static Map<String, TimeValues> processesMap = new HashMap<String, TimeValues>();
+    public Map<String, TimeValues> processesMap = new HashMap<String, TimeValues>();
 
     /**
      * Wrapper class for the arrival and burst time values, as well as the starting
@@ -17,13 +17,16 @@ public class ProcessesTable {
         private int burst;
         private int turnAroundTime;
         private int waitingTime;
+        private int priority;
+        private int startingTime;
 
-        public TimeValues(int arrival, int burst, int turnAroundTime,
-                int waitingTime) {
+        public TimeValues(int arrival, int burst, int turnAroundTime, int waitingTime, int priority, int startingTime) {
             this.arrival = arrival;
             this.burst = burst;
             this.turnAroundTime = turnAroundTime;
             this.waitingTime = waitingTime;
+            this.priority = priority;
+            this.startingTime = startingTime;
         }
 
         public int getArrival() {
@@ -42,6 +45,10 @@ public class ProcessesTable {
             return this.waitingTime;
         }
 
+        public int getPriority() {
+            return this.priority;
+        }
+
         public void setArrival(int arrival) {
             this.arrival = arrival;
         }
@@ -56,6 +63,20 @@ public class ProcessesTable {
 
         public void setWaitingTime(int waitingTime) {
             this.waitingTime = waitingTime;
+        }
+
+        public void setPriority(int priority) {
+            this.priority = priority;
+        }
+
+
+
+        public int getStartingTime() {
+            return this.startingTime;
+        }
+
+        public void setStartingTime(int startingTime) {
+            this.startingTime = startingTime;
         }
 
     }

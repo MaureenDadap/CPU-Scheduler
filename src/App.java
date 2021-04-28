@@ -5,11 +5,10 @@ public class App {
 
     /**
      * Main menu method. Separated from main method for recursive calls
-     * 
-     * @param (choice) initialized in the main method, used to select an item in the
-     *                 menu; also used for yes/no prompts
      */
-    private static void menu(char choice) {
+    private static void menu() {
+        ProcessesTable processesTable = new ProcessesTable();
+        char choice = '0';
         do {
             System.out.println();
             System.out.println("CHOOSE THE SCHEDULING ALGORITHM");
@@ -30,7 +29,7 @@ public class App {
                 System.out.println("FIRST COME FIRST SERVE ALGORITHM");
                 System.out.println("--------------------------------");
 
-                firstComeFirstServe();
+                firstComeFirstServe(processesTable);
 
             } else if (choice == '2') {
                 System.out.println();
@@ -51,7 +50,7 @@ public class App {
                 System.out.println("PRIORITY SCHEDULING ALGORITHM");
                 System.out.println("--------------------------------");
 
-                priorityScheduling();
+                priorityScheduling(processesTable);
 
             } else if (choice == '5') {
                 System.out.println();
@@ -65,7 +64,7 @@ public class App {
                 System.out.println("MULTI-LEVEL QUEUE ALGORITHM");
                 System.out.println("--------------------------------");
 
-                multilevelQueue();
+                multilevelQueue(processesTable);
 
             } else if (choice == '0') {
                 System.exit(0);
@@ -82,11 +81,11 @@ public class App {
     /**
      * First Come First Serve sub menu method
      */
-    private static void firstComeFirstServe() {
+    private static void firstComeFirstServe(ProcessesTable processesTable) {
         char ch = '0';
 
         // Check first if a process exists; if none exist:
-        if (Utils.checkProcessesTableExisting() == false) {
+        if (Utils.checkProcessesTableExisting(processesTable) == false) {
             System.out.println("\t ________________________________________________");
             System.out.println("\t||                                                ||");
             System.out.println("\t|| > THERE ARE CURRENTLY NO PROCESSES EXISTING    ||");
@@ -105,13 +104,13 @@ public class App {
                 ch = scanner.next().charAt(0);
 
                 if (ch == '1') {
-                    Utils.processCreator();
+                    Utils.processCreator(processesTable, false);
                     break;
                 } else if (ch == '2') {
-                    Utils.randomProcessCreator();
+                    Utils.randomProcessCreator(processesTable, false);
                     break;
                 } else if (ch == '0') {
-                    menu('0');
+                    menu();
                 } else {
                     System.out.println("\t ________________________________________________");
                     System.out.println("\t||                                                ||");
@@ -120,14 +119,14 @@ public class App {
                 }
             } while (ch != '0');
 
-            firstComeFirstServe();
+            firstComeFirstServe(processesTable);
         }
 
         // Check first if a process exists; if a process exists:
         else {
             // display the processes table
             System.out.println();
-            Utils.displayProcessesTable();
+            Utils.displayProcessesTable(processesTable, false);
 
             // Sub-menu for actions to be taken.
             // It is the same as if there are no existing processes,
@@ -142,16 +141,16 @@ public class App {
                 ch = scanner.next().charAt(0);
 
                 if (ch == '1') {
-                    Algorithms.firstComeFirstServe();
+                    Algorithms.firstComeFirstServe(processesTable);
                     break;
                 } else if (ch == '2') {
-                    Utils.processCreator();
+                    Utils.processCreator(processesTable, false);
                     break;
                 } else if (ch == '3') {
-                    Utils.randomProcessCreator();
+                    Utils.randomProcessCreator(processesTable, false);
                     break;
                 } else if (ch == '0') {
-                    menu('0');
+                    menu();
                 } else {
                     System.out.println("\t ________________________________________________");
                     System.out.println("\t||                                                ||");
@@ -160,35 +159,107 @@ public class App {
                 }
             } while (ch != '0');
 
-            firstComeFirstServe();
+            firstComeFirstServe(processesTable);
 
         }
-    }
-
-    private static void shortestJobFirst() {
-
     }
 
     private static void shortestRemainingTime() {
 
     }
 
-    private static void priorityScheduling() {
+    /**
+     * First Come First Serve sub menu method
+     */
+    private static void priorityScheduling(ProcessesTable processesTable) {
+        char ch = '0';
 
+        // Check first if a process exists; if none exist:
+        if (Utils.checkProcessesTableExisting(processesTable) == false) {
+            System.out.println("\t ________________________________________________");
+            System.out.println("\t||                                                ||");
+            System.out.println("\t|| > THERE ARE CURRENTLY NO PROCESSES EXISTING    ||");
+            System.out.println("\t||________________________________________________||");
+            System.out.println();
+
+            // Sub-menu for actions to be taken.
+            // It is the same as if there are existing processes,
+            // except that it doesn't have the "Compute" option
+            do {
+                System.out.println("( 1 ) Create a process");
+                System.out.println("( 2 ) Generate a random process");
+                System.out.println("( 0 ) Exit");
+                System.out.print("CHOICE: ");
+
+                ch = scanner.next().charAt(0);
+
+                if (ch == '1') {
+                    Utils.processCreator(processesTable, true);
+                    break;
+                } else if (ch == '2') {
+                    Utils.randomProcessCreator(processesTable, true);
+                    break;
+                } else if (ch == '0') {
+                    menu();
+                } else {
+                    System.out.println("\t ________________________________________________");
+                    System.out.println("\t||                                                ||");
+                    System.out.println("\t|| > INVALID INPUT                                ||");
+                    System.out.println("\t||________________________________________________||");
+                }
+            } while (ch != '0');
+
+            priorityScheduling(processesTable);
+        }
+
+        // Check first if a process exists; if a process exists:
+        else {
+            // display the processes table
+            System.out.println();
+            Utils.displayProcessesTable(processesTable, true);
+
+            // Sub-menu for actions to be taken.
+            // It is the same as if there are no existing processes,
+            // except that it has the "Compute" option
+            do {
+                System.out.println("( 1 ) Compute");
+                System.out.println("( 2 ) Create a process");
+                System.out.println("( 3 ) Generate a random process");
+                System.out.println("( 0 ) Exit");
+                System.out.print("CHOICE: ");
+
+                ch = scanner.next().charAt(0);
+
+                if (ch == '1') {
+                    Algorithms.priorityScheduling(processesTable);
+                    break;
+                } else if (ch == '2') {
+                    Utils.processCreator(processesTable, true);
+                    break;
+                } else if (ch == '3') {
+                    Utils.randomProcessCreator(processesTable, true);
+                    break;
+                } else if (ch == '0') {
+                    menu();
+                } else {
+                    System.out.println("\t ________________________________________________");
+                    System.out.println("\t||                                                ||");
+                    System.out.println("\t|| > INVALID INPUT                                ||");
+                    System.out.println("\t||________________________________________________||");
+                }
+            } while (ch != '0');
+
+            priorityScheduling(processesTable);
+
+        }
     }
 
-    private static void roundRobin() {
-
-    }
-
-    private static void multilevelQueue() {
+    private static void multilevelQueue(ProcessesTable processesTable) {
 
     }
 
     public static void main(String[] args) throws Exception {
         scanner = new Scanner(System.in);
-        char choice = '0';
-
-        menu(choice);
+        menu();
     }
 }
