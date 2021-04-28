@@ -47,7 +47,7 @@ public class App {
 
             } else if (choice == '4') {
                 System.out.println();
-                System.out.println("PRIORITY SCHEDULING ALGORITHM");
+                System.out.println("(NON-PREEMPTIVE) PRIORITY SCHEDULING ALGORITHM");
                 System.out.println("--------------------------------");
 
                 priorityScheduling(processesTable);

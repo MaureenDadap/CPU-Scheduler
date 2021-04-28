@@ -19,15 +19,22 @@ public class ProcessesTable {
         private int waitingTime;
         private int priority;
         private int startingTime;
+        private int completionTime;
 
-        public TimeValues(int arrival, int burst, int turnAroundTime, int waitingTime, int priority, int startingTime) {
+        public TimeValues(int arrival, int burst, int turnAroundTime, int waitingTime, int priority, int startingTime,
+                int completionTime) {
             this.arrival = arrival;
             this.burst = burst;
             this.turnAroundTime = turnAroundTime;
             this.waitingTime = waitingTime;
             this.priority = priority;
             this.startingTime = startingTime;
+            this.completionTime = completionTime;
         }
+
+        //
+        // GETTERS
+        //
 
         public int getArrival() {
             return this.arrival;
@@ -49,6 +56,18 @@ public class ProcessesTable {
             return this.priority;
         }
 
+        public int getStartingTime() {
+            return this.startingTime;
+        }
+
+        public int getCompletionTime() {
+            return this.completionTime;
+        }
+
+        //
+        // SETTERS
+        //
+
         public void setArrival(int arrival) {
             this.arrival = arrival;
         }
@@ -69,14 +88,12 @@ public class ProcessesTable {
             this.priority = priority;
         }
 
-
-
-        public int getStartingTime() {
-            return this.startingTime;
-        }
-
         public void setStartingTime(int startingTime) {
             this.startingTime = startingTime;
+        }
+
+        public void setCompletionTime(int completionTime) {
+            this.completionTime = completionTime;
         }
 
     }
