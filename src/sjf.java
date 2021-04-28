@@ -15,6 +15,7 @@ public class sjf {
 		BurstTime = new int[n];
 		WaitingTime = new int[n];
 		TurnaroundTime = new int[n];
+
 		id = new String[n];
 		read();
 		sort();
@@ -38,7 +39,7 @@ public class sjf {
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < n; j++) {
 				if (ArrivalTime[i] < ArrivalTime[j]) {
-					t = ArrivalTime[i]; 
+					t = ArrivalTime[i];
 					ArrivalTime[i] = ArrivalTime[j];
 					ArrivalTime[j] = t;
 					t = BurstTime[i];
@@ -50,15 +51,15 @@ public class sjf {
 				}
 
 				// if (BurstTime[i] < BurstTime[j]) {
-				// 	t = ArrivalTime[i]; 
-				// 	ArrivalTime[i] = ArrivalTime[j];
-				// 	ArrivalTime[j] = t;
-				// 	t = BurstTime[i];
-				// 	BurstTime[i] = BurstTime[j];
-				// 	BurstTime[j] = t;
-				// 	p = id[i];
-				// 	id[i] = id[j];
-				// 	id[j] = p;
+				// t = ArrivalTime[i];
+				// ArrivalTime[i] = ArrivalTime[j];
+				// ArrivalTime[j] = t;
+				// t = BurstTime[i];
+				// BurstTime[i] = BurstTime[j];
+				// BurstTime[j] = t;
+				// p = id[i];
+				// id[i] = id[j];
+				// id[j] = p;
 				// }
 			}
 	}
@@ -108,12 +109,13 @@ public class sjf {
 
 		System.out.println("Process name \t Arrival Time \t Burst Time \t Waiting Time \t Turnaround Time");
 		for (int i = 0; i < n; i++) {
-			System.out.println(
-					"   " + id[i] + "\t\t" + ArrivalTime[i] + "\t\t" + BurstTime[i] + "\t\t" + WaitingTime[i] + "\t\t" + TurnaroundTime[i]);
+			System.out.println("   " + id[i] + "\t\t" + ArrivalTime[i] + "\t\t" + BurstTime[i] + "\t\t" + WaitingTime[i]
+					+ "\t\t" + TurnaroundTime[i]);
 
 		}
 		System.out.println("Average Waiting time : " + sumwait / n + "\nAverage Turnaround Time : " + sumturn / n);
 
-		//TODO: gantt chart
+		// TODO: GANTT CHART:
+
 	}
 }

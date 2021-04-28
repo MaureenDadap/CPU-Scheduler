@@ -43,7 +43,7 @@ public class App {
                 System.out.println("SHORTEST REMAINING TIME ALGORITHM");
                 System.out.println("--------------------------------");
 
-                shortestRemainingTime();
+                shortestRemainingTime(processesTable);
 
             } else if (choice == '4') {
                 System.out.println();
@@ -110,6 +110,7 @@ public class App {
                     Utils.randomProcessCreator(processesTable, false);
                     break;
                 } else if (ch == '0') {
+                    processesTable = null; // garbage
                     menu();
                 } else {
                     System.out.println("\t ________________________________________________");
@@ -150,6 +151,7 @@ public class App {
                     Utils.randomProcessCreator(processesTable, false);
                     break;
                 } else if (ch == '0') {
+                    processesTable = null; // garbage
                     menu();
                 } else {
                     System.out.println("\t ________________________________________________");
@@ -164,8 +166,88 @@ public class App {
         }
     }
 
-    private static void shortestRemainingTime() {
+    private static void shortestRemainingTime(ProcessesTable processesTable) {
+        char ch = '0';
 
+        // Check first if a process exists; if none exist:
+        if (Utils.checkProcessesTableExisting(processesTable) == false) {
+            System.out.println("\t ________________________________________________");
+            System.out.println("\t||                                                ||");
+            System.out.println("\t|| > THERE ARE CURRENTLY NO PROCESSES EXISTING    ||");
+            System.out.println("\t||________________________________________________||");
+            System.out.println();
+
+            // Sub-menu for actions to be taken.
+            // It is the same as if there are existing processes,
+            // except that it doesn't have the "Compute" option
+            do {
+                System.out.println("( 1 ) Create a process");
+                System.out.println("( 2 ) Generate a random process");
+                System.out.println("( 0 ) Exit");
+                System.out.print("CHOICE: ");
+
+                ch = scanner.next().charAt(0);
+
+                if (ch == '1') {
+                    Utils.processCreator(processesTable, false);
+                    break;
+                } else if (ch == '2') {
+                    Utils.randomProcessCreator(processesTable, false);
+                    break;
+                } else if (ch == '0') {
+                    processesTable = null; //garbage
+                    menu();
+                } else {
+                    System.out.println("\t ________________________________________________");
+                    System.out.println("\t||                                                ||");
+                    System.out.println("\t|| > INVALID INPUT                                ||");
+                    System.out.println("\t||________________________________________________||");
+                }
+            } while (ch != '0');
+
+            shortestRemainingTime(processesTable);
+        }
+
+        // Check first if a process exists; if a process exists:
+        else {
+            // display the processes table
+            System.out.println();
+            Utils.displayProcessesTable(processesTable, false);
+
+            // Sub-menu for actions to be taken.
+            // It is the same as if there are no existing processes,
+            // except that it has the "Compute" option
+            do {
+                System.out.println("( 1 ) Compute");
+                System.out.println("( 2 ) Create a process");
+                System.out.println("( 3 ) Generate a random process");
+                System.out.println("( 0 ) Exit");
+                System.out.print("CHOICE: ");
+
+                ch = scanner.next().charAt(0);
+
+                if (ch == '1') {
+                    Algorithms.firstComeFirstServe(processesTable);
+                    break;
+                } else if (ch == '2') {
+                    Utils.processCreator(processesTable, false);
+                    break;
+                } else if (ch == '3') {
+                    Utils.randomProcessCreator(processesTable, false);
+                    break;
+                } else if (ch == '0') {
+                    processesTable = null; //garbage
+                    menu();
+                } else {
+                    System.out.println("\t ________________________________________________");
+                    System.out.println("\t||                                                ||");
+                    System.out.println("\t|| > INVALID INPUT                                ||");
+                    System.out.println("\t||________________________________________________||");
+                }
+            } while (ch != '0');
+
+            firstComeFirstServe(processesTable);
+        }
     }
 
     /**
@@ -200,6 +282,7 @@ public class App {
                     Utils.randomProcessCreator(processesTable, true);
                     break;
                 } else if (ch == '0') {
+                    processesTable = null; // garbage
                     menu();
                 } else {
                     System.out.println("\t ________________________________________________");
@@ -240,6 +323,7 @@ public class App {
                     Utils.randomProcessCreator(processesTable, true);
                     break;
                 } else if (ch == '0') {
+                    processesTable = null; // garbage
                     menu();
                 } else {
                     System.out.println("\t ________________________________________________");

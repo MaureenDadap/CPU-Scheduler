@@ -298,12 +298,20 @@ public class Utils {
         String processLabel = "  %-2s  |";
         String times = "| %-2d   ";
 
+        boolean beginsAtZero = true;
+        if (list.get(0).getValue().getStartingTime() != 0) {
+            beginsAtZero = false;
+        }
+
         System.out.println();
         System.out.format("+------------------------------------------------+%n");
         System.out.format("|                  GANTT CHART                   |%n");
         System.out.format("+------------------------------------------------+%n");
 
-        // TODO: create gantt chart after computation
+        if (!beginsAtZero) {
+            System.out.print("|      ");
+        }
+
         System.out.print("|");
         for (Map.Entry<String, ProcessesTable.TimeValues> i : list) {
             System.out.format(processLabel, i.getKey());
@@ -311,17 +319,26 @@ public class Utils {
         }
         System.out.println();
 
+        if (!beginsAtZero) {
+            System.out.print("+------");
+        }
         for (int i = 0; i < list.size(); i++) {
             System.out.print("+------");
         }
         System.out.println();
 
+        if (!beginsAtZero) {
+            System.out.print("^      ");
+        }
         System.out.print("^");
         for (int i = 0; i < list.size(); i++) {
             System.out.print("      ^");
         }
         System.out.println();
 
+        if (!beginsAtZero) {
+            System.out.format(times, 0);
+        }
         System.out.format(times, list.get(0).getValue().getStartingTime());
         for (Map.Entry<String, ProcessesTable.TimeValues> i : list) {
             System.out.format(times, i.getValue().getCompletionTime());
