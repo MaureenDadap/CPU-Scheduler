@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * Class that contains all algorithms
@@ -41,12 +40,5 @@ public class Algorithms {
         // PRINT AVERAGES
         System.out.println("Average Waiting Time: ");
         System.out.println("Average Turnaround Time: ");
-    }
-
-    /**
-     * Shortest Job First Algorithm
-     */
-    public static void shortestJobFirst() {
-
     }
 }

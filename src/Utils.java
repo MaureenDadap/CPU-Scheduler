@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * Class that contains all utility methods
+ */
 public class Utils {
     /**
      * Checks if the table/hashmap has content if empty = the value returned is

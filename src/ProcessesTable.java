@@ -9,7 +9,8 @@ public class ProcessesTable {
     public static Map<String, TimeValues> processesMap = new HashMap<String, TimeValues>();
 
     /**
-     * Wrapper class for the arrival and burst time values
+     * Wrapper class for the arrival and burst time values, as well as the starting
+     * time, completion time, turnaround time, and the waiting time
      */
     class TimeValues {
         private int arrival;

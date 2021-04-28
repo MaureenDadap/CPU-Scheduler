@@ -37,7 +37,7 @@ public class App {
                 System.out.println("SHORTEST JOB FIRST ALGORITHM");
                 System.out.println("--------------------------------");
 
-                shortestJobFirst();
+                sjf.shortestJobFirst();
 
             } else if (choice == '3') {
                 System.out.println();
@@ -58,7 +58,7 @@ public class App {
                 System.out.println("ROUND-ROBIN ALGORITHM");
                 System.out.println("--------------------------------");
 
-                roundRobin();
+                RoundRobin.roundRobin();
 
             } else if (choice == '6') {
                 System.out.println();
