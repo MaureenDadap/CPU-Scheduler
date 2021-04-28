@@ -15,17 +15,13 @@ public class ProcessesTable {
     class TimeValues {
         private int arrival;
         private int burst;
-        private int startingTime;
-        private int completionTime;
         private int turnAroundTime;
         private int waitingTime;
 
-        public TimeValues(int arrival, int burst, int startingTime, int completionTime, int turnAroundTime,
+        public TimeValues(int arrival, int burst, int turnAroundTime,
                 int waitingTime) {
             this.arrival = arrival;
             this.burst = burst;
-            this.startingTime = startingTime;
-            this.completionTime = completionTime;
             this.turnAroundTime = turnAroundTime;
             this.waitingTime = waitingTime;
         }
@@ -36,14 +32,6 @@ public class ProcessesTable {
 
         public int getBurst() {
             return this.burst;
-        }
-
-        public int getStartingTime() {
-            return this.startingTime;
-        }
-
-        public int getCompletionTime() {
-            return this.completionTime;
         }
 
         public int getTurnAroundTime() {
@@ -60,14 +48,6 @@ public class ProcessesTable {
 
         public void setBurst(int burst) {
             this.burst = burst;
-        }
-
-        public void setStartingTime(int startingTime) {
-            this.startingTime = startingTime;
-        }
-
-        public void setCompletionTime(int completionTime) {
-            this.completionTime = completionTime;
         }
 
         public void setTurnAroundTime(int turnAroundTime) {

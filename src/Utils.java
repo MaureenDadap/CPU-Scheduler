@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.Map.Entry;
 
 /**
  * Class that contains all utility methods
@@ -48,7 +49,7 @@ public class Utils {
         // Use the TimeValues class to save integer primitives (arrival and burst) to an
         // object
         // the object will then be saved to the processes table/map
-        ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst, 0, 0, 0, 0);
+        ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst, 0, 0);
         ProcessesTable.processesMap.put(id, values);
     }
 
@@ -64,7 +65,7 @@ public class Utils {
         String id;
         int arrival;
         int burst;
-        int range = 20; // range of numbers for the randomizer
+        int range = 10; // range of numbers for the randomizer
 
         System.out.println();
         System.out.println("# CREATE A NEW RANDOM PROCESS");
@@ -72,7 +73,10 @@ public class Utils {
         arrival = random.nextInt(range);
         System.out.println("-> Arrival time: " + arrival);
 
-        burst = random.nextInt(range);
+        do {
+            burst = random.nextInt(range);
+        } while (burst == 0);
+
         System.out.println("-> Burst time: " + burst);
 
         // Generate an id to be used as the key for the process
@@ -83,7 +87,7 @@ public class Utils {
         // Use the TimeValues class to save integer primitives (arrival and burst) to an
         // object
         // the object will then be saved to the processes table/map
-        ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst, 0, 0, 0, 0);
+        ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst, 0, 0);
         ProcessesTable.processesMap.put(id, values);
     }
 
@@ -148,27 +152,96 @@ public class Utils {
     }
 
     /**
-     * Displays a table of the summary of data after computation
+     * Method that finds the waiting time for all processes
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a sorted copy
+     *               of the original map
      */
-    public static void createTableSummary() {
-        Set<Map.Entry<String, ProcessesTable.TimeValues>> entries = ProcessesTable.processesMap.entrySet();
-        String leftAlignFormat = "| %-3s | %-4d | %-4d | %-4d | %-4d | %-4d | %-5d |%n";
+    public static void findWaitingTime(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+        // waiting time for first process will be 0
+        list.get(0).getValue().setWaitingTime(0);
+
+        for (int i = 1; i < list.size(); i++) {
+            list.get(i).getValue().setWaitingTime(
+                    list.get(i - 1).getValue().getBurst() + list.get(i - 1).getValue().getWaitingTime());
+        }
+    }
+
+    /**
+     * Method that finds the turn around time for all processes
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a sorted copy
+     *               of the original map
+     */
+    public static void findTurnAroundTime(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+        // calculating turnaround time by adding
+        // bt[i] + wt[i]
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).getValue()
+                    .setTurnAroundTime(list.get(i).getValue().getBurst() + list.get(i).getValue().getWaitingTime());
+        }
+    }
+
+    /**
+     * Method that finds the average waiting time
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a sorted copy
+     *               of the original map
+     */
+    public static float findAverageWT(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+        int totalWt = 0;
+        for (int i = 0; i < list.size(); i++) {
+            totalWt += list.get(i).getValue().getWaitingTime();
+        }
+
+        return (float) totalWt / list.size();
+    }
+
+    /**
+     * Method that finds the average turn around time
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a sorted copy
+     *               of the original map
+     */
+    public static float findAverageTaT(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+        int totalTaT = 0;
+        for (int i = 0; i < list.size(); i++) {
+            totalTaT += list.get(i).getValue().getTurnAroundTime();
+        }
+
+        return (float) totalTaT / list.size();
+    }
+
+    /**
+     * Displays a table of the summary of data after computation
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a computed copy
+     *               of the original map
+     */
+    public static void createTableSummary(List<Map.Entry<String, ProcessesTable.TimeValues>> entries) {
+        // Set<Map.Entry<String, ProcessesTable.TimeValues>> entries =
+        // ProcessesTable.processesMap.entrySet();
+        String leftAlignFormat = "| %-3s | %-4d | %-4d | %-4d | %-5d |%n";
 
         System.out.println();
-        System.out.format("+------------------------------------------------+%n");
-        System.out.format("|                 TABLE SUMMARY                  |%n");
-        System.out.format("+-----+------+------+------+------+------+-------+%n");
-        System.out.format("| ID  | AT   | BT   | ST   | CT   | WT   | tAT   |%n");
-        System.out.format("+-----+------+------+------+------+------+-------+%n");
+        System.out.format("+----------------------------------+%n");
+        System.out.format("|           TABLE SUMMARY          |%n");
+        System.out.format("+-----+------+------+------+-------+%n");
+        System.out.format("| ID  | AT   | BT   | WT   | tAT   |%n");
+        System.out.format("+-----+------+------+------+-------+%n");
 
         for (Map.Entry<String, ProcessesTable.TimeValues> entry : entries) {
             System.out.format(leftAlignFormat, entry.getKey(), entry.getValue().getArrival(),
-                    entry.getValue().getBurst(), entry.getValue().getStartingTime(),
-                    entry.getValue().getCompletionTime(), entry.getValue().getWaitingTime(),
+                    entry.getValue().getBurst(), entry.getValue().getWaitingTime(),
                     entry.getValue().getTurnAroundTime());
         }
 
-        System.out.format("+-----+------+------+------+------+------+-------+%n");
+        System.out.format("+-----+------+------+------+-------+%n");
     }
 
     /**
@@ -181,5 +254,7 @@ public class Utils {
         System.out.format("+------------------------------------------------+%n");
 
         // TODO: create gantt chart after computation
+
+        System.out.println();
     }
 }

@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Class that contains all algorithms
@@ -12,20 +13,17 @@ public class Algorithms {
     public static void firstComeFirstServe() {
         List<Map.Entry<String, ProcessesTable.TimeValues>> list = new ArrayList<Map.Entry<String, ProcessesTable.TimeValues>>(
                 ProcessesTable.processesMap.entrySet());
-        int startingTime;
-        int completionTime;
-        int turnAroundTime;
-        int waitingTime;
 
         // #1 - sort the processes according to arrival time
         list = Utils.sortByArrival(list);
 
         // #2 - determine waiting times
+        Utils.findWaitingTime(list);
 
         // #3 - find turnaround time
+        Utils.findTurnAroundTime(list);
 
-
-        // CODE BELOW USED TO PRINT SORTED LIST, USED TO DEBUG ONLY
+        //CODE BELOW USED TO PRINT SORTED LIST, USED TO DEBUG ONLY
         // for (Entry<String, ProcessesTable.TimeValues> i : list) {
         //     System.out.print(i.getKey() + "\t");
         //     System.out.print(i.getValue().getArrival() + "\t");
@@ -34,11 +32,11 @@ public class Algorithms {
 
 
         // CREATE THE TABLES
-        Utils.createTableSummary();
+        Utils.createTableSummary(list);
         Utils.createGanttChart();
 
         // PRINT AVERAGES
-        System.out.println("Average Waiting Time: ");
-        System.out.println("Average Turnaround Time: ");
+        System.out.println("# Average Waiting Time: " + Utils.findAverageWT(list));
+        System.out.println("# Average Turnaround Time: " + Utils.findAverageTaT(list));
     }
 }
