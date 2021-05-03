@@ -137,6 +137,39 @@ public class Utils {
 
     }
 
+
+    /**
+     * Method that finds the average waiting time
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a sorted copy
+     *               of the original map
+     */
+    public static float findAverageWT(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+        int totalWt = 0;
+        for (int i = 0; i < list.size(); i++) {
+            totalWt += list.get(i).getValue().getWaitingTime();
+        }
+
+        return (float) totalWt / list.size();
+    }
+
+    /**
+     * Method that finds the average turn around time
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a sorted copy
+     *               of the original map
+     */
+    public static float findAverageTaT(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+        int totalTaT = 0;
+        for (int i = 0; i < list.size(); i++) {
+            totalTaT += list.get(i).getValue().getTurnAroundTime();
+        }
+
+        return (float) totalTaT / list.size();
+    }
+
     /**
      * Displays a table of the summary of data after computation
      * 
