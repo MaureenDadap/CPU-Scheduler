@@ -9,7 +9,7 @@ import java.util.Map;
  */
 public class Algorithms {
     /**
-     * (NON-PREEMPTIVE) First Come First Serve Algorithm
+     * First Come First Serve Algorithm
      */
     public static void firstComeFirstServe(ProcessesTable processesTable) {
         List<Map.Entry<String, ProcessesTable.TimeValues>> list = new ArrayList<Map.Entry<String, ProcessesTable.TimeValues>>(
@@ -80,6 +80,91 @@ public class Algorithms {
     }
 
     /**
+     * Shortest Job First Version 2 Algorithm.
+     */
+    public static void shortestJobFirstVer2(ProcessesTable processesTable) {
+        List<Map.Entry<String, ProcessesTable.TimeValues>> list = new ArrayList<Map.Entry<String, ProcessesTable.TimeValues>>(
+                processesTable.processesMap.entrySet());
+
+        List<Boolean> isCompleted = new ArrayList<Boolean>();
+        int completed = 0;
+        int currentTime = 0;
+        ProcessesTable.TimeValues values;
+
+        for (int i = 0; i < list.size(); i++) {
+            isCompleted.add(false);
+        }
+
+        while (completed != list.size()) {
+
+            int index = -1;
+            int max = 1000;
+
+            for (int i = 0; i < list.size(); i++) {
+                values = list.get(i).getValue();
+
+                if (values.getArrival() <= currentTime && isCompleted.get(i) == false) {
+                    if (values.getBurst() < max) {
+                        max = values.getBurst();
+                        index = i;
+                    }
+                    if (values.getBurst() == max) {
+                        if (values.getArrival() < list.get(index).getValue().getArrival()) {
+                            max = values.getBurst();
+                            index = i;
+                        }
+                    }
+                }
+            }
+
+            if (index != -1) {
+                values = list.get(index).getValue();
+
+                values.setStartingTime(currentTime);
+                values.setCompletionTime(values.getStartingTime() + values.getBurst());
+                values.setTurnAroundTime(values.getCompletionTime() - values.getArrival());
+                values.setWaitingTime(values.getTurnAroundTime() - values.getBurst());
+
+                isCompleted.set(index, true);
+                completed++;
+                currentTime = values.getCompletionTime();
+
+            } else {
+                currentTime++;
+            }
+        }
+
+        Collections.sort(list, new Comparator<Map.Entry<String, ProcessesTable.TimeValues>>() {
+            public int compare(Map.Entry<String, ProcessesTable.TimeValues> o1,
+                    Map.Entry<String, ProcessesTable.TimeValues> o2) {
+
+                int temp;
+                int a = o1.getValue().getStartingTime();
+                int b = o2.getValue().getStartingTime();
+
+                if (a > b)
+                    temp = +1;
+                else if (a < b)
+                    temp = -1;
+                else
+                    temp = 0;
+
+                return temp;
+            }
+        });
+
+        // CREATE THE TABLES
+        Utils.createTableSummary(list, true);
+        Utils.createGanttChart(list);
+
+        // PRINT AVERAGES
+        System.out.println("# Average Waiting Time: " + Utils.findAverageWT(list));
+        System.out.println("# Average Turnaround Time: " + Utils.findAverageTaT(list));
+
+        System.out.println("\n/////////////////////////////////////////////");
+    }
+
+    /**
      * Shortest Remaining Time First Algorithm
      */
     public static void shortestJobFirst(ProcessesTable processesTable) {
@@ -131,10 +216,8 @@ public class Algorithms {
                 processesTable.processesMap.entrySet());
 
         List<Boolean> isCompleted = new ArrayList<Boolean>();
-        List<Map.Entry<String, ProcessesTable.TimeValues>> queue = new ArrayList<Map.Entry<String, ProcessesTable.TimeValues>>();
         int completed = 0;
         int currentTime = 0;
-        boolean isIdle = true;
         ProcessesTable.TimeValues values;
 
         for (int i = 0; i < list.size(); i++) {
@@ -144,29 +227,19 @@ public class Algorithms {
         while (completed != list.size()) {
 
             int index = -1;
-            int maxP = 1000;
-
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getValue().getArrival() == currentTime) {
-                    if (isIdle) {
-                        list.get(i).getValue().setStartingTime(currentTime);
-                        isIdle = false;
-                    }
-                    queue.add(list.get(i));
-                }
-            }
+            int max = 1000;
 
             for (int i = 0; i < list.size(); i++) {
                 values = list.get(i).getValue();
 
                 if (values.getArrival() <= currentTime && isCompleted.get(i) == false) {
-                    if (values.getPriority() < maxP) {
-                        maxP = values.getPriority();
+                    if (values.getPriority() < max) {
+                        max = values.getPriority();
                         index = i;
                     }
-                    if (values.getPriority() == maxP) {
+                    if (values.getPriority() == max) {
                         if (values.getArrival() < list.get(index).getValue().getArrival()) {
-                            maxP = values.getPriority();
+                            max = values.getPriority();
                             index = i;
                         }
                     }
