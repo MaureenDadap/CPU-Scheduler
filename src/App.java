@@ -104,10 +104,10 @@ public class App {
                 ch = scanner.next().charAt(0);
 
                 if (ch == '1') {
-                    Utils.processCreator(processesTable, false);
+                    Utils.processCreator(processesTable, false, false);
                     break;
                 } else if (ch == '2') {
-                    Utils.randomProcessCreator(processesTable, false);
+                    Utils.randomProcessCreator(processesTable, false, false);
                     break;
                 } else if (ch == '0') {
                     processesTable = null; // garbage
@@ -130,7 +130,7 @@ public class App {
             System.out.println("--------------------------------");
             // display the processes table
             System.out.println();
-            Utils.displayProcessesTable(processesTable, false);
+            Utils.displayProcessesTable(processesTable, false, false);
 
             // Sub-menu for actions to be taken.
             // It is the same as if there are no existing processes,
@@ -146,12 +146,13 @@ public class App {
 
                 if (ch == '1') {
                     Algorithms.firstComeFirstServe(processesTable);
+                    Utils.displayDetails(processesTable, false, false);
                     break;
                 } else if (ch == '2') {
-                    Utils.processCreator(processesTable, false);
+                    Utils.processCreator(processesTable, false, false);
                     break;
                 } else if (ch == '3') {
-                    Utils.randomProcessCreator(processesTable, false);
+                    Utils.randomProcessCreator(processesTable, false, false);
                     break;
                 } else if (ch == '0') {
                     processesTable = null; // garbage
@@ -195,10 +196,10 @@ public class App {
                 ch = scanner.next().charAt(0);
 
                 if (ch == '1') {
-                    Utils.processCreator(processesTable, false);
+                    Utils.processCreator(processesTable, false, false);
                     break;
                 } else if (ch == '2') {
-                    Utils.randomProcessCreator(processesTable, false);
+                    Utils.randomProcessCreator(processesTable, false, false);
                     break;
                 } else if (ch == '0') {
                     processesTable = null; // garbage
@@ -222,7 +223,7 @@ public class App {
 
             // display the processes table
             System.out.println();
-            Utils.displayProcessesTable(processesTable, false);
+            Utils.displayProcessesTable(processesTable, false, false);
 
             // Sub-menu for actions to be taken.
             // It is the same as if there are no existing processes,
@@ -238,12 +239,13 @@ public class App {
 
                 if (ch == '1') {
                     Algorithms.shortestJobFirstVer2(processesTable);
+                    Utils.displayDetails(processesTable, false, false);
                     break;
                 } else if (ch == '2') {
-                    Utils.processCreator(processesTable, false);
+                    Utils.processCreator(processesTable, false, false);
                     break;
                 } else if (ch == '3') {
-                    Utils.randomProcessCreator(processesTable, false);
+                    Utils.randomProcessCreator(processesTable, false, false);
                     break;
                 } else if (ch == '0') {
                     processesTable = null; // garbage
@@ -284,10 +286,10 @@ public class App {
                 ch = scanner.next().charAt(0);
 
                 if (ch == '1') {
-                    Utils.processCreator(processesTable, false);
+                    Utils.processCreator(processesTable, false, false);
                     break;
                 } else if (ch == '2') {
-                    Utils.randomProcessCreator(processesTable, false);
+                    Utils.randomProcessCreator(processesTable, false, false);
                     break;
                 } else if (ch == '0') {
                     processesTable = null; // garbage
@@ -311,7 +313,7 @@ public class App {
 
             // display the processes table
             System.out.println();
-            Utils.displayProcessesTable(processesTable, false);
+            Utils.displayProcessesTable(processesTable, false, false);
 
             // Sub-menu for actions to be taken.
             // It is the same as if there are no existing processes,
@@ -327,12 +329,13 @@ public class App {
 
                 if (ch == '1') {
                     Algorithms.shortestRemainingTime(processesTable);
+                    Utils.displayDetails(processesTable, false, false);
                     break;
                 } else if (ch == '2') {
-                    Utils.processCreator(processesTable, false);
+                    Utils.processCreator(processesTable, false, false);
                     break;
                 } else if (ch == '3') {
-                    Utils.randomProcessCreator(processesTable, false);
+                    Utils.randomProcessCreator(processesTable, false, false);
                     break;
                 } else if (ch == '0') {
                     processesTable = null; // garbage
@@ -375,10 +378,10 @@ public class App {
                 ch = scanner.next().charAt(0);
 
                 if (ch == '1') {
-                    Utils.processCreator(processesTable, true);
+                    Utils.processCreator(processesTable, true, false);
                     break;
                 } else if (ch == '2') {
-                    Utils.randomProcessCreator(processesTable, true);
+                    Utils.randomProcessCreator(processesTable, true, false);
                     break;
                 } else if (ch == '0') {
                     processesTable = null; // garbage
@@ -402,7 +405,7 @@ public class App {
 
             // display the processes table
             System.out.println();
-            Utils.displayProcessesTable(processesTable, true);
+            Utils.displayProcessesTable(processesTable, true, false);
 
             // Sub-menu for actions to be taken.
             // It is the same as if there are no existing processes,
@@ -418,12 +421,13 @@ public class App {
 
                 if (ch == '1') {
                     Algorithms.priorityScheduling(processesTable);
+                    Utils.displayDetails(processesTable, true, false);
                     break;
                 } else if (ch == '2') {
-                    Utils.processCreator(processesTable, true);
+                    Utils.processCreator(processesTable, true, false);
                     break;
                 } else if (ch == '3') {
-                    Utils.randomProcessCreator(processesTable, true);
+                    Utils.randomProcessCreator(processesTable, true, false);
                     break;
                 } else if (ch == '0') {
                     processesTable = null; // garbage
@@ -441,8 +445,97 @@ public class App {
         }
     }
 
+    /**
+     * Multi-level queue sub menu method
+     */
     private static void multilevelQueue(ProcessesTable processesTable) {
+        char ch = '0';
 
+        // Check first if a process exists; if none exist:
+        if (Utils.checkProcessesTableExisting(processesTable) == false) {
+            System.out.println("\t ________________________________________________");
+            System.out.println("\t||                                                ||");
+            System.out.println("\t|| > THERE ARE CURRENTLY NO PROCESSES EXISTING    ||");
+            System.out.println("\t||________________________________________________||");
+            System.out.println();
+
+            // Sub-menu for actions to be taken.
+            // It is the same as if there are existing processes,
+            // except that it doesn't have the "Compute" option
+            do {
+                System.out.println("( 1 ) Create a process");
+                System.out.println("( 2 ) Generate a random process");
+                System.out.println("( 0 ) Exit");
+                System.out.print("CHOICE: ");
+
+                ch = scanner.next().charAt(0);
+
+                if (ch == '1') {
+                    Utils.processCreator(processesTable, false, true);
+                    break;
+                } else if (ch == '2') {
+                    Utils.randomProcessCreator(processesTable, false, true);
+                    break;
+                } else if (ch == '0') {
+                    processesTable = null; // garbage
+                    menu();
+                } else {
+                    System.out.println("\t ________________________________________________");
+                    System.out.println("\t||                                                ||");
+                    System.out.println("\t|| > INVALID INPUT                                ||");
+                    System.out.println("\t||________________________________________________||");
+                }
+            } while (ch != '0');
+
+            multilevelQueue(processesTable);
+        }
+
+        // Check first if a process exists; if a process exists:
+        else {
+            System.out.println();
+            System.out.println("MULTI-LEVEL QUEUE ALGORITHM");
+            System.out.println("--------------------------------");
+
+            // display the processes table
+            System.out.println();
+            Utils.displayProcessesTable(processesTable, false, true);
+
+            // Sub-menu for actions to be taken.
+            // It is the same as if there are no existing processes,
+            // except that it has the "Compute" option
+            do {
+                System.out.println("( 1 ) Compute");
+                System.out.println("( 2 ) Create a process");
+                System.out.println("( 3 ) Generate a random process");
+                System.out.println("( 0 ) Exit");
+                System.out.print("CHOICE: ");
+
+                ch = scanner.next().charAt(0);
+
+                if (ch == '1') {
+                    Algorithms.multilevelQueue(processesTable);
+                    Utils.displayDetails(processesTable, false, true);
+                    break;
+                } else if (ch == '2') {
+                    Utils.processCreator(processesTable, false, true);
+                    break;
+                } else if (ch == '3') {
+                    Utils.randomProcessCreator(processesTable, false, true);
+                    break;
+                } else if (ch == '0') {
+                    processesTable = null; // garbage
+                    menu();
+                } else {
+                    System.out.println("\t ________________________________________________");
+                    System.out.println("\t||                                                ||");
+                    System.out.println("\t|| > INVALID INPUT                                ||");
+                    System.out.println("\t||________________________________________________||");
+                }
+            } while (ch != '0');
+
+            multilevelQueue(processesTable);
+
+        }
     }
 
     public static void main(String[] args) throws Exception {

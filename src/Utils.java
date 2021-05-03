@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -21,13 +22,14 @@ public class Utils {
     /**
      * Creates a process and saves it into the processes map. It requires user input
      */
-    public static void processCreator(ProcessesTable processesTable, boolean isPriority) {
+    public static void processCreator(ProcessesTable processesTable, boolean isPriority, boolean isMultiLevel) {
         StringBuilder sBuilder = new StringBuilder();
 
         String id;
         int arrival;
         int burst;
         int priority = 1;
+        int level = 1;
 
         System.out.println();
         System.out.println("# CREATE A NEW PROCESS");
@@ -43,6 +45,16 @@ public class Utils {
             priority = App.scanner.nextInt();
         }
 
+        if (isMultiLevel == true) {
+            System.out.print("-> Enter the priority: ");
+            priority = App.scanner.nextInt();
+
+            do {
+                System.out.print("-> Enter the queue level (1 or 2 ONLY): ");
+                level = App.scanner.nextInt();
+            } while (level < 1 || level > 2);
+        }
+
         // Generate an id to be used as the key for the process
         sBuilder.append("P");
         sBuilder.append(processesTable.processesMap.size() + 1);
@@ -51,7 +63,7 @@ public class Utils {
         // Use the TimeValues class to save integer primitives (arrival and burst) to an
         // object
         // the object will then be saved to the processes table/map
-        ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst, 0, 0, priority, 0, 0);
+        ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst, 0, 0, priority, 0, 0, level);
         processesTable.processesMap.put(id, values);
     }
 
@@ -59,7 +71,7 @@ public class Utils {
      * Creates a process and saves it into the processes map. It does not need user
      * input
      */
-    public static void randomProcessCreator(ProcessesTable processesTable, boolean isPriority) {
+    public static void randomProcessCreator(ProcessesTable processesTable, boolean isPriority, boolean isMultiLevel) {
         StringBuilder sBuilder = new StringBuilder();
         Random random = new Random();
 
@@ -67,7 +79,9 @@ public class Utils {
         int arrival;
         int burst;
         int priority = 1;
+        int level = 1;
         int range = 10; // range of numbers for the randomizer
+        int lRange = 3;
 
         System.out.println();
         System.out.println("# CREATE A NEW RANDOM PROCESS");
@@ -89,6 +103,20 @@ public class Utils {
             System.out.println("-> Priority: " + priority);
         }
 
+        if (isMultiLevel == true) {
+            do {
+                priority = random.nextInt(range);
+            } while (priority == 0);
+
+            System.out.println("-> Priority: " + priority);
+
+            do {
+                level = random.nextInt(lRange);
+            } while (level < 1 || level > 2);
+
+            System.out.println("-> Queue Level: " + level);
+        }
+
         // Generate an id to be used as the key for the process
         sBuilder.append("P");
         sBuilder.append(processesTable.processesMap.size() + 1);
@@ -97,18 +125,18 @@ public class Utils {
         // Use the TimeValues class to save integer primitives (arrival and burst) to an
         // object
         // the object will then be saved to the processes table/map
-        ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst, 0, 0, priority, 0, 0);
+        ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst, 0, 0, priority, 0, 0, level);
         processesTable.processesMap.put(id, values);
     }
 
     /**
      * Displays a table of the existing processes created
      */
-    public static void displayProcessesTable(ProcessesTable processesTable, boolean isPriorityVisible) {
+    public static void displayProcessesTable(ProcessesTable processesTable, boolean isPriority, boolean isMultiLevel) {
         Set<Map.Entry<String, ProcessesTable.TimeValues>> entries = processesTable.processesMap.entrySet();
         String leftAlignFormat;
 
-        if (isPriorityVisible == false) {
+        if (isPriority == false && isMultiLevel == false) {
             leftAlignFormat = "| %-5s | %-9d | %-7d |%n";
 
             System.out.format("+-------+-----------+---------+%n");
@@ -123,14 +151,24 @@ public class Utils {
 
         } else {
             leftAlignFormat = "| %-5s | %-9d | %-7d | %-8d |%n";
-
-            System.out.format("+-------+-----------+---------+----------+%n");
-            System.out.format("| ID    | ARRIVAL   | BURST   | PRIORITY |%n");
             System.out.format("+-------+-----------+---------+----------+%n");
 
+            if (isPriority == true)
+                System.out.format("| ID    | ARRIVAL   | BURST   | PRIORITY |%n");
+            else if (isMultiLevel == true)
+                System.out.format("| ID    | ARRIVAL   | BURST   | LEVEL    |%n");
+
+            System.out.format("+-------+-----------+---------+----------+%n");
+
+            int priorityOrLevel = 0;
             for (Map.Entry<String, ProcessesTable.TimeValues> entry : entries) {
+                if (isPriority == true)
+                    priorityOrLevel = entry.getValue().getPriority();
+                else if (isMultiLevel == true)
+                    priorityOrLevel = entry.getValue().getLevel();
+
                 System.out.format(leftAlignFormat, entry.getKey(), entry.getValue().getArrival(),
-                        entry.getValue().getBurst(), entry.getValue().getPriority());
+                        entry.getValue().getBurst(), priorityOrLevel);
             }
             System.out.format("+-------+-----------+---------+----------+%n");
         }
@@ -176,10 +214,11 @@ public class Utils {
      *               time stored in the TimeValues object, it is now a computed copy
      *               of the original map
      */
-    public static void createTableSummary(List<Map.Entry<String, ProcessesTable.TimeValues>> list, boolean isPriority) {
+    public static void createTableSummary(List<Map.Entry<String, ProcessesTable.TimeValues>> list, boolean isPriority,
+            boolean isMultiLevel) {
         String leftAlignFormat;
 
-        if (isPriority == false) {
+        if (isPriority == false && isMultiLevel == false) {
             leftAlignFormat = "| %-3s | %-4d | %-4d | %-4d | %-4d | %-4d | %-4d |%n";
 
             System.out.println();
@@ -198,18 +237,29 @@ public class Utils {
             System.out.format("+-----+------+------+------+------+------+------+%n");
         } else {
             leftAlignFormat = "| %-3s | %-4d | %-4d | %-4d | %-4d | %-4d | %-4d | %-4d |%n";
+            int priorityOrLevel = 0;
 
             System.out.println();
             System.out.format("+------------------------------------------------------+%n");
             System.out.format("|                      TABLE SUMMARY                   |%n");
             System.out.format("+-----+------+------+------+------+------+------+------+%n");
-            System.out.format("| ID  | AT   | BT   | ST   | CT   | WT   | tAT  | P    |%n");
+
+            if (isPriority == true)
+                System.out.format("| ID  | AT   | BT   | ST   | CT   | WT   | tAT  | P    |%n");
+            else if (isMultiLevel == true)
+                System.out.format("| ID  | AT   | BT   | ST   | CT   | WT   | tAT  | Lvl  |%n");
+
             System.out.format("+-----+------+------+------+------+------+------+------+%n");
 
             for (Map.Entry<String, ProcessesTable.TimeValues> i : list) {
+                if (isPriority == true)
+                    priorityOrLevel = i.getValue().getPriority();
+                else if (isMultiLevel = true)
+                    priorityOrLevel = i.getValue().getLevel();
+
                 System.out.format(leftAlignFormat, i.getKey(), i.getValue().getArrival(), i.getValue().getBurst(),
                         i.getValue().getStartingTime(), i.getValue().getCompletionTime(), i.getValue().getWaitingTime(),
-                        i.getValue().getTurnAroundTime(), i.getValue().getPriority());
+                        i.getValue().getTurnAroundTime(), priorityOrLevel);
             }
 
             System.out.format("+-----+------+------+------+------+------+------+------+%n");
@@ -217,7 +267,8 @@ public class Utils {
     }
 
     /**
-     * Displays a table of the summary of data after computation (for SRT Version)
+     * NOT YET USED Displays a table of the summary of data after computation (for
+     * SRT Version)
      * 
      * @param (list) list that contains the process map to be sorted by the arrival
      *               time stored in the TimeValues object, it is now a computed copy
@@ -297,5 +348,20 @@ public class Utils {
 
         System.out.println();
         System.out.println();
+    }
+
+    public static void displayDetails(ProcessesTable processesTable, boolean isPriority, boolean isMultiLevel) {
+        List<Map.Entry<String, ProcessesTable.TimeValues>> list = new ArrayList<Map.Entry<String, ProcessesTable.TimeValues>>(
+                processesTable.processesMap.entrySet());
+
+        // CREATE THE TABLES
+        Utils.createTableSummary(list, isPriority, isMultiLevel);
+        Utils.createGanttChart(list);
+
+        // PRINT AVERAGES
+        System.out.println("# Average Waiting Time: " + Utils.findAverageWT(list));
+        System.out.println("# Average Turnaround Time: " + Utils.findAverageTaT(list));
+
+        System.out.println("\n/////////////////////////////////////////////");
     }
 }
