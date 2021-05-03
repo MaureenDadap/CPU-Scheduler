@@ -154,7 +154,7 @@ public class Algorithms {
         });
 
         // CREATE THE TABLES
-        Utils.createTableSummary(list, true);
+        Utils.createTableSummary(list, false);
         Utils.createGanttChart(list);
 
         // PRINT AVERAGES

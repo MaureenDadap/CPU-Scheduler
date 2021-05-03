@@ -125,6 +125,9 @@ public class App {
 
         // Check first if a process exists; if a process exists:
         else {
+            System.out.println();
+            System.out.println("FIRST COME FIRST SERVE ALGORITHM");
+            System.out.println("--------------------------------");
             // display the processes table
             System.out.println();
             Utils.displayProcessesTable(processesTable, false);
@@ -213,6 +216,10 @@ public class App {
 
         // Check first if a process exists; if a process exists:
         else {
+            System.out.println();
+            System.out.println("SHORTEST JOB FIRST ALGORITHM");
+            System.out.println("--------------------------------");
+
             // display the processes table
             System.out.println();
             Utils.displayProcessesTable(processesTable, false);
@@ -385,6 +392,10 @@ public class App {
 
         // Check first if a process exists; if a process exists:
         else {
+            System.out.println();
+            System.out.println("(NON-PREEMPTIVE) PRIORITY SCHEDULING ALGORITHM");
+            System.out.println("--------------------------------");
+            
             // display the processes table
             System.out.println();
             Utils.displayProcessesTable(processesTable, true);
