@@ -33,14 +33,14 @@ public class Utils {
         System.out.println("# CREATE A NEW PROCESS");
 
         System.out.print("-> Enter the arrival time: ");
-        arrival = App.scanner.nextInt();
+        arrival = App2.scanner.nextInt();
 
         System.out.print("-> Enter the burst time: ");
-        burst = App.scanner.nextInt();
+        burst = App2.scanner.nextInt();
 
         if (isPriority == true) {
             System.out.print("-> Enter the priority: ");
-            priority = App.scanner.nextInt();
+            priority = App2.scanner.nextInt();
         }
 
         // Generate an id to be used as the key for the process
@@ -68,6 +68,7 @@ public class Utils {
         int burst;
         int priority = 1;
         int range = 10; // range of numbers for the randomizer
+        int pRange = 5;
 
         System.out.println();
         System.out.println("# CREATE A NEW RANDOM PROCESS");
@@ -83,7 +84,7 @@ public class Utils {
 
         if (isPriority == true) {
             do {
-                priority = random.nextInt(range);
+                priority = random.nextInt(pRange);
             } while (priority == 0);
 
             System.out.println("-> Priority: " + priority);
@@ -99,6 +100,16 @@ public class Utils {
         // the object will then be saved to the processes table/map
         ProcessesTable.TimeValues values = processesTable.new TimeValues(arrival, burst, 0, 0, priority, 0, 0);
         processesTable.processesMap.put(id, values);
+    }
+
+    // TODO: method that edits an existing process; low-priority
+    public static void processEditor() {
+
+    }
+
+    // TODO: method that deletes an existing process; low-priority
+    public static void processDeleter() {
+
     }
 
     /**
@@ -135,6 +146,101 @@ public class Utils {
             System.out.format("+-------+-----------+---------+----------+%n");
         }
 
+    }
+
+    /**
+     * Method that finds the starting time for all processes
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a sorted copy
+     *               of the original map
+     */
+    public static void findStartingTime(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+
+        // starting time for first process will be 0
+        list.get(0).getValue().setStartingTime(list.get(0).getValue().getArrival());
+
+        for (int i = 1; i < list.size(); i++) {
+
+            list.get(i).getValue().setStartingTime(
+                    list.get(i - 1).getValue().getBurst() + list.get(i - 1).getValue().getStartingTime());
+        }
+    }
+
+    /**
+     * Method that finds the waiting time for all processes
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a sorted copy
+     *               of the original map
+     */
+    public static void findWaitingTime(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).getValue()
+                    .setWaitingTime(list.get(i).getValue().getStartingTime() - list.get(i).getValue().getArrival());
+        }
+    }
+
+    /**
+     * Method that finds the completion time for all processes
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a sorted copy
+     *               of the original map
+     */
+    public static void findCompletionTime(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).getValue()
+                    .setCompletionTime(list.get(i).getValue().getStartingTime() + list.get(i).getValue().getBurst());
+        }
+    }
+
+    /**
+     * Method that finds the turn around time for all processes
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a sorted copy
+     *               of the original map
+     */
+    public static void findTurnAroundTime(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+        // calculating turnaround time by adding
+        // bt[i] + wt[i]
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).getValue()
+                    .setTurnAroundTime(list.get(i).getValue().getBurst() + list.get(i).getValue().getWaitingTime());
+        }
+    }
+
+    /**
+     * Method that finds the average waiting time
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a sorted copy
+     *               of the original map
+     */
+    public static float findAverageWT(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+        int totalWt = 0;
+        for (int i = 0; i < list.size(); i++) {
+            totalWt += list.get(i).getValue().getWaitingTime();
+        }
+
+        return (float) totalWt / list.size();
+    }
+
+    /**
+     * Method that finds the average turn around time
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a sorted copy
+     *               of the original map
+     */
+    public static float findAverageTaT(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+        int totalTaT = 0;
+        for (int i = 0; i < list.size(); i++) {
+            totalTaT += list.get(i).getValue().getTurnAroundTime();
+        }
+
+        return (float) totalTaT / list.size();
     }
 
     /**
@@ -192,20 +298,12 @@ public class Utils {
         String processLabel = "  %-2s  |";
         String times = "| %-2d   ";
 
-        boolean beginsAtZero = true;
-        if (list.get(0).getValue().getStartingTime() != 0) {
-            beginsAtZero = false;
-        }
-
         System.out.println();
         System.out.format("+------------------------------------------------+%n");
         System.out.format("|                  GANTT CHART                   |%n");
         System.out.format("+------------------------------------------------+%n");
 
-        if (!beginsAtZero) {
-            System.out.print("|      ");
-        }
-
+        // TODO: create gantt chart after computation
         System.out.print("|");
         for (Map.Entry<String, ProcessesTable.TimeValues> i : list) {
             System.out.format(processLabel, i.getKey());
@@ -213,26 +311,17 @@ public class Utils {
         }
         System.out.println();
 
-        if (!beginsAtZero) {
-            System.out.print("+------");
-        }
         for (int i = 0; i < list.size(); i++) {
             System.out.print("+------");
         }
         System.out.println();
 
-        if (!beginsAtZero) {
-            System.out.print("^      ");
-        }
         System.out.print("^");
         for (int i = 0; i < list.size(); i++) {
             System.out.print("      ^");
         }
         System.out.println();
 
-        if (!beginsAtZero) {
-            System.out.format(times, 0);
-        }
         System.out.format(times, list.get(0).getValue().getStartingTime());
         for (Map.Entry<String, ProcessesTable.TimeValues> i : list) {
             System.out.format(times, i.getValue().getCompletionTime());
