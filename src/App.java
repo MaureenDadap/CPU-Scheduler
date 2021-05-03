@@ -305,6 +305,10 @@ public class App {
 
         // Check first if a process exists; if a process exists:
         else {
+            System.out.println();
+            System.out.println("SHORTEST REMAINING TIME FIRST ALGORITHM");
+            System.out.println("--------------------------------");
+
             // display the processes table
             System.out.println();
             Utils.displayProcessesTable(processesTable, false);
@@ -322,7 +326,7 @@ public class App {
                 ch = scanner.next().charAt(0);
 
                 if (ch == '1') {
-                    Algorithms.firstComeFirstServe(processesTable);
+                    Algorithms.shortestRemainingTime(processesTable);
                     break;
                 } else if (ch == '2') {
                     Utils.processCreator(processesTable, false);
@@ -341,7 +345,7 @@ public class App {
                 }
             } while (ch != '0');
 
-            firstComeFirstServe(processesTable);
+            shortestRemainingTime(processesTable);
         }
     }
 
@@ -395,7 +399,7 @@ public class App {
             System.out.println();
             System.out.println("(NON-PREEMPTIVE) PRIORITY SCHEDULING ALGORITHM");
             System.out.println("--------------------------------");
-            
+
             // display the processes table
             System.out.println();
             Utils.displayProcessesTable(processesTable, true);
