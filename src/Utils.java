@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -104,11 +105,11 @@ public class Utils {
     /**
      * Displays a table of the existing processes created
      */
-    public static void displayProcessesTable(ProcessesTable processesTable, boolean isPriorityVisible) {
+    public static void displayProcessesTable(ProcessesTable processesTable, boolean isPriority) {
         Set<Map.Entry<String, ProcessesTable.TimeValues>> entries = processesTable.processesMap.entrySet();
         String leftAlignFormat;
 
-        if (isPriorityVisible == false) {
+        if (isPriority == false) {
             leftAlignFormat = "| %-5s | %-9d | %-7d |%n";
 
             System.out.format("+-------+-----------+---------+%n");
@@ -123,7 +124,6 @@ public class Utils {
 
         } else {
             leftAlignFormat = "| %-5s | %-9d | %-7d | %-8d |%n";
-
             System.out.format("+-------+-----------+---------+----------+%n");
             System.out.format("| ID    | ARRIVAL   | BURST   | PRIORITY |%n");
             System.out.format("+-------+-----------+---------+----------+%n");
@@ -136,7 +136,6 @@ public class Utils {
         }
 
     }
-
 
     /**
      * Method that finds the average waiting time
@@ -215,7 +214,33 @@ public class Utils {
 
             System.out.format("+-----+------+------+------+------+------+------+------+%n");
         }
+    }
 
+    /**
+     * NOT YET USED Displays a table of the summary of data after computation (for
+     * SRT Version)
+     * 
+     * @param (list) list that contains the process map to be sorted by the arrival
+     *               time stored in the TimeValues object, it is now a computed copy
+     *               of the original map
+     */
+    public static void createTableSummarySRT(List<Map.Entry<String, ProcessesTable.TimeValues>> list) {
+        String leftAlignFormat = "| %-3s | %-4d | %-4d | %-4d | %-4d | %-4d | %-4d | %-4d | %-4d |%n";
+
+        System.out.println();
+        System.out.format("+-------------------------------------------------------------+%n");
+        System.out.format("|                         TABLE SUMMARY                       |%n");
+        System.out.format("+-----+------+------+------+------+------+------+------+------+%n");
+        System.out.format("| ID  | AT   | BT   | ST   | WQT  | CT   | PWT  | WT   | tAT  |%n");
+        System.out.format("+-----+------+------+------+------+------+------+------+------+%n");
+
+        for (Map.Entry<String, ProcessesTable.TimeValues> i : list) {
+            System.out.format(leftAlignFormat, i.getKey(), i.getValue().getArrival(), i.getValue().getBurst(),
+                    i.getValue().getStartingTime(), i.getValue().getCompletionTime(), i.getValue().getWaitingTime(),
+                    i.getValue().getTurnAroundTime());
+        }
+
+        System.out.format("+-----+------+------+------+------+------+------+------+------+%n");
     }
 
     /**
@@ -273,5 +298,20 @@ public class Utils {
 
         System.out.println();
         System.out.println();
+    }
+
+    public static void displayDetails(ProcessesTable processesTable, boolean isPriority) {
+        List<Map.Entry<String, ProcessesTable.TimeValues>> list = new ArrayList<Map.Entry<String, ProcessesTable.TimeValues>>(
+                processesTable.processesMap.entrySet());
+
+        // CREATE THE TABLES
+        Utils.createTableSummary(list, isPriority);
+        Utils.createGanttChart(list);
+
+        // PRINT AVERAGES
+        System.out.println("# Average Waiting Time: " + Utils.findAverageWT(list));
+        System.out.println("# Average Turnaround Time: " + Utils.findAverageTaT(list));
+
+        System.out.println("\n/////////////////////////////////////////////");
     }
 }
