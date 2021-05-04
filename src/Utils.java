@@ -299,4 +299,19 @@ public class Utils {
         System.out.println();
         System.out.println();
     }
+
+    public static void displayDetails(ProcessesTable processesTable, boolean isPriority) {
+        List<Map.Entry<String, ProcessesTable.TimeValues>> list = new ArrayList<Map.Entry<String, ProcessesTable.TimeValues>>(
+                processesTable.processesMap.entrySet());
+
+        // CREATE THE TABLES
+        Utils.createTableSummary(list, isPriority);
+        Utils.createGanttChart(list);
+
+        // PRINT AVERAGES
+        System.out.println("# Average Waiting Time: " + Utils.findAverageWT(list));
+        System.out.println("# Average Turnaround Time: " + Utils.findAverageTaT(list));
+
+        System.out.println("\n/////////////////////////////////////////////");
+    }
 }

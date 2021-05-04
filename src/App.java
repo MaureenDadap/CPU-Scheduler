@@ -146,7 +146,6 @@ public class App {
 
                 if (ch == '1') {
                     Algorithms.firstComeFirstServe(processesTable);
-
                     break;
                 } else if (ch == '2') {
                     Utils.processCreator(processesTable, false);
@@ -239,7 +238,6 @@ public class App {
 
                 if (ch == '1') {
                     Algorithms.shortestJobFirstVer2(processesTable);
-
                     break;
                 } else if (ch == '2') {
                     Utils.processCreator(processesTable, false);
@@ -332,7 +330,6 @@ public class App {
 
                 if (ch == '1') {
                     Algorithms.shortestRemainingTime(processesTable);
-
                     break;
                 } else if (ch == '2') {
                     Utils.processCreator(processesTable, false);
@@ -349,7 +346,7 @@ public class App {
                     System.out.println("\t|| > INVALID INPUT                                ||");
                     System.out.println("\t||________________________________________________||");
                 }
-            } while (ch != '0');
+            } while (ch !=  '0');
 
             shortestRemainingTime(processesTable);
         }
