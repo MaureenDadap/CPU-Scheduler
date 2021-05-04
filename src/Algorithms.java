@@ -67,6 +67,17 @@ public class Algorithms {
             list.get(i).getValue()
                     .setTurnAroundTime(list.get(i).getValue().getBurst() + list.get(i).getValue().getWaitingTime());
         }
+
+        
+        // CREATE THE TABLES
+        Utils.createTableSummary(list, false);
+        Utils.createGanttChart(list);
+
+        // PRINT AVERAGES
+        System.out.println("# Average Waiting Time: " + Utils.findAverageWT(list));
+        System.out.println("# Average Turnaround Time: " + Utils.findAverageTaT(list));
+
+        System.out.println("\n/////////////////////////////////////////////");
     }
 
     /**
@@ -142,6 +153,17 @@ public class Algorithms {
                 return temp;
             }
         });
+
+        
+        // CREATE THE TABLES
+        Utils.createTableSummary(list, false);
+        Utils.createGanttChart(list);
+
+        // PRINT AVERAGES
+        System.out.println("# Average Waiting Time: " + Utils.findAverageWT(list));
+        System.out.println("# Average Turnaround Time: " + Utils.findAverageTaT(list));
+
+        System.out.println("\n/////////////////////////////////////////////");
     }
 
     /**
@@ -311,6 +333,17 @@ public class Algorithms {
                 return temp;
             }
         });
+
+        
+        // CREATE THE TABLES
+        Utils.createTableSummary(list, false);
+        Utils.createGanttChart(list);
+
+        // PRINT AVERAGES
+        System.out.println("# Average Waiting Time: " + Utils.findAverageWT(list));
+        System.out.println("# Average Turnaround Time: " + Utils.findAverageTaT(list));
+
+        System.out.println("\n/////////////////////////////////////////////");
     }
 
     /**
