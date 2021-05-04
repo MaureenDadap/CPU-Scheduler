@@ -305,6 +305,81 @@ public class Algorithms {
     }
 
     /**
+     * (PREEMPTIVE) Priority Algorithm.
+     */
+    public static void prioritySchedulingPreemptive(ProcessesTable processesTable) {
+        List<Map.Entry<String, ProcessesTable.TimeValues>> list = new ArrayList<Map.Entry<String, ProcessesTable.TimeValues>>(
+                processesTable.processesMap.entrySet());
+
+        List<Boolean> isCompleted = new ArrayList<Boolean>();
+        int completed = 0;
+        int currentTime = 0;
+        ProcessesTable.TimeValues values;
+
+        for (int i = 0; i < list.size(); i++) {
+            isCompleted.add(false);
+        }
+
+        while (completed != list.size()) {
+
+            int index = -1;
+            int max = 1000;
+
+            for (int i = 0; i < list.size(); i++) {
+                values = list.get(i).getValue();
+
+                if (values.getArrival() <= currentTime && isCompleted.get(i) == false) {
+                    if (values.getPriority() < max) {
+                        max = values.getPriority();
+                        index = i;
+                    }
+                    if (values.getPriority() == max) {
+                        if (values.getArrival() < list.get(index).getValue().getArrival()) {
+                            max = values.getPriority();
+                            index = i;
+                        }
+                    }
+                }
+            }
+
+            if (index != -1) {
+                values = list.get(index).getValue();
+
+                values.setStartingTime(currentTime);
+                values.setCompletionTime(values.getStartingTime() + values.getBurst());
+                values.setTurnAroundTime(values.getCompletionTime() - values.getArrival());
+                values.setWaitingTime(values.getTurnAroundTime() - values.getBurst());
+
+                isCompleted.set(index, true);
+                completed++;
+                currentTime = values.getCompletionTime();
+
+            } else {
+                currentTime++;
+            }
+        }
+
+        Collections.sort(list, new Comparator<Map.Entry<String, ProcessesTable.TimeValues>>() {
+            public int compare(Map.Entry<String, ProcessesTable.TimeValues> o1,
+                    Map.Entry<String, ProcessesTable.TimeValues> o2) {
+
+                int temp;
+                int a = o1.getValue().getStartingTime();
+                int b = o2.getValue().getStartingTime();
+
+                if (a > b)
+                    temp = +1;
+                else if (a < b)
+                    temp = -1;
+                else
+                    temp = 0;
+
+                return temp;
+            }
+        });
+    }
+
+    /**
      * Multi Level Queue Algorithm. FIXED PRIO
      */
     public static void multilevelQueue(ProcessesTable processesTable) {

@@ -20,10 +20,9 @@ public class ProcessesTable {
         private int priority;
         private int startingTime;
         private int completionTime;
-        private int level;
 
         public TimeValues(int arrival, int burst, int turnAroundTime, int waitingTime, int priority, int startingTime,
-                int completionTime, int level) {
+                int completionTime) {
             this.arrival = arrival;
             this.burst = burst;
             this.turnAroundTime = turnAroundTime;
@@ -31,7 +30,6 @@ public class ProcessesTable {
             this.priority = priority;
             this.startingTime = startingTime;
             this.completionTime = completionTime;
-            this.level = level;
         }
 
         //
@@ -66,10 +64,6 @@ public class ProcessesTable {
             return this.completionTime;
         }
 
-        public int getLevel() {
-            return this.level;
-        }
-
         //
         // SETTERS
         //
@@ -100,10 +94,6 @@ public class ProcessesTable {
 
         public void setCompletionTime(int completionTime) {
             this.completionTime = completionTime;
-        }
-
-        public void setLevel(int level) {
-            this.level = level;
         }
 
     }
