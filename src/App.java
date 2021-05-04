@@ -61,8 +61,8 @@ public class App {
 
             } else if (choice == '6') {
                 System.out.println();
-            System.out.println("(PREEMPTIVE) PRIORITY SCHEDULING ALGORITHM");
-            System.out.println("--------------------------------");
+                System.out.println("(PREEMPTIVE) PRIORITY SCHEDULING ALGORITHM");
+                System.out.println("--------------------------------");
 
                 prioritySchedulingPreemptive(processesTable);
 
@@ -146,7 +146,7 @@ public class App {
 
                 if (ch == '1') {
                     Algorithms.firstComeFirstServe(processesTable);
-                    Utils.displayDetails(processesTable, false);
+
                     break;
                 } else if (ch == '2') {
                     Utils.processCreator(processesTable, false);
@@ -239,7 +239,7 @@ public class App {
 
                 if (ch == '1') {
                     Algorithms.shortestJobFirstVer2(processesTable);
-                    Utils.displayDetails(processesTable, false);
+
                     break;
                 } else if (ch == '2') {
                     Utils.processCreator(processesTable, false);
@@ -332,7 +332,7 @@ public class App {
 
                 if (ch == '1') {
                     Algorithms.shortestRemainingTime(processesTable);
-                    Utils.displayDetails(processesTable, false);
+
                     break;
                 } else if (ch == '2') {
                     Utils.processCreator(processesTable, false);
@@ -349,7 +349,7 @@ public class App {
                     System.out.println("\t|| > INVALID INPUT                                ||");
                     System.out.println("\t||________________________________________________||");
                 }
-            } while (ch !=  '0');
+            } while (ch != '0');
 
             shortestRemainingTime(processesTable);
         }
@@ -424,7 +424,7 @@ public class App {
 
                 if (ch == '1') {
                     Algorithms.priorityScheduling(processesTable);
-                    Utils.displayDetails(processesTable, true);
+                   
                     break;
                 } else if (ch == '2') {
                     Utils.processCreator(processesTable, true);
@@ -449,7 +449,7 @@ public class App {
     }
 
     /**
-     *  Preemptive priority algorithm sub menu method
+     * Preemptive priority algorithm sub menu method
      */
     private static void prioritySchedulingPreemptive(ProcessesTable processesTable) {
         char ch = '0';
@@ -517,7 +517,7 @@ public class App {
 
                 if (ch == '1') {
                     Algorithms.prioritySchedulingPreemptive(processesTable);
-                    Utils.displayDetails(processesTable, true);
+                   
                     break;
                 } else if (ch == '2') {
                     Utils.processCreator(processesTable, true);
