@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class App {
@@ -57,7 +58,12 @@ public class App {
                 System.out.println("ROUND-ROBIN ALGORITHM");
                 System.out.println("--------------------------------");
 
-                RoundRobin.roundRobin();
+                try {
+                    RoundRobin.roundRobin();
+                } catch (NumberFormatException | IOException e) {
+                    System.out.println("error");
+                    menu();
+                }
 
             } else if (choice == '6') {
                 System.out.println();
